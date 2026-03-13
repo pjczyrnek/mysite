@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mysite
-          image: 778841258598.dkr.ecr.eu-west-2.amazonaws.com/mysite:312da7d1999b03dba4f5e621df655cc7c5a543d5
+          image: 778841258598.dkr.ecr.eu-west-2.amazonaws.com/mysite:81d7b66ad03f4c28a8535a2b0e8970698b8cc46b
           ports:
             - containerPort: 80
       imagePullSecrets:
