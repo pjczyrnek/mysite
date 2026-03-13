@@ -4,3 +4,18 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - grafana-secret.yaml
+  - grafana-deployment.yaml
+  - grafana-service.yaml
+  - grafana-ingress.yaml
+  - prometheus-config.yaml
+  - prometheus-deployment.yaml
+  - prometheus-service.yaml
+  - blackbox-config.yaml
+  - blackbox-deployment.yaml
+  - blackbox-service.yaml
+  - kube-state-metrics-rbac.yaml
+  - kube-state-metrics-deployment.yaml
+  - kube-state-metrics-service.yaml
+  - node-exporter-daemonset.yaml
+  - node-exporter-service.yaml

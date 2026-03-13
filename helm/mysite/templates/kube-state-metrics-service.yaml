@@ -1,0 +1,18 @@
+{{- if .Values.kubeStateMetrics.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mysite.fullname" . }}-kube-state-metrics
+  labels:
+    {{- include "mysite.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kube-state-metrics
+spec:
+  selector:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: kube-state-metrics
+  ports:
+    - port: {{ .Values.kubeStateMetrics.service.port }}
+      targetPort: {{ .Values.kubeStateMetrics.service.port }}
+      protocol: TCP
+  type: ClusterIP
+{{- end }}

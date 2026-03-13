@@ -1,0 +1,17 @@
+{{- if .Values.blackbox.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mysite.fullname" . }}-blackbox-config
+  labels:
+    {{- include "mysite.labels" . | nindent 4 }}
+    app.kubernetes.io/component: blackbox
+data:
+  blackbox.yml: |
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 5s
+        http:
+          method: GET
+{{- end }}

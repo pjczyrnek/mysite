@@ -1,0 +1,11 @@
+Your release has been installed.
+
+{{- if .Values.app.ingress.enabled }}
+App URL:
+  http://{{ .Values.app.ingress.host }}{{ .Values.app.ingress.path }}
+{{- end }}
+
+{{- if and .Values.grafana.enabled .Values.grafana.ingress.enabled }}
+Grafana URL:
+  http://{{ .Values.grafana.ingress.host }}{{ .Values.grafana.ingress.path }}
+{{- end }}

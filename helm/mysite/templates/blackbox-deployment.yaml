@@ -1,0 +1,36 @@
+{{- if .Values.blackbox.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mysite.fullname" . }}-blackbox
+  labels:
+    {{- include "mysite.labels" . | nindent 4 }}
+    app.kubernetes.io/component: blackbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: blackbox
+  template:
+    metadata:
+      labels:
+        {{- include "mysite.labels" . | nindent 8 }}
+        app.kubernetes.io/component: blackbox
+    spec:
+      containers:
+        - name: blackbox
+          image: "{{ .Values.blackbox.image.repository }}:{{ .Values.blackbox.image.tag }}"
+          imagePullPolicy: {{ .Values.blackbox.image.pullPolicy }}
+          args:
+            - "--config.file=/etc/blackbox/blackbox.yml"
+          ports:
+            - containerPort: {{ .Values.blackbox.service.port }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/blackbox
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "mysite.fullname" . }}-blackbox-config
+{{- end }}

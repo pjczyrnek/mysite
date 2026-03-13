@@ -1,0 +1,84 @@
+nameOverride: ""
+fullnameOverride: ""
+
+app:
+  replicaCount: 1
+  image:
+    repository: 778841258598.dkr.ecr.eu-west-2.amazonaws.com/mysite
+    tag: v2
+    pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: ecr-secret
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    host: mysite.local
+    path: /
+    pathType: Prefix
+
+prometheus:
+  enabled: true
+  image:
+    repository: prom/prometheus
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 9090
+  scrapeInterval: 15s
+  evaluationInterval: 15s
+  blackboxTarget: "http://mysite.local/"
+
+blackbox:
+  enabled: true
+  image:
+    repository: prom/blackbox-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 9115
+
+nodeExporter:
+  enabled: true
+  image:
+    repository: prom/node-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 9100
+
+kubeStateMetrics:
+  enabled: true
+  image:
+    repository: registry.k8s.io/kube-state-metrics/kube-state-metrics
+    tag: v2.13.0
+    pullPolicy: IfNotPresent
+  service:
+    port: 8080
+  serviceAccountName: kube-state-metrics
+
+grafana:
+  enabled: true
+  image:
+    repository: grafana/grafana
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 80
+    targetPort: 3000
+  ingress:
+    enabled: true
+    className: nginx
+    annotations: {}
+    host: grafana.local
+    path: /
+    pathType: Prefix
+  adminUser: admin
+  adminPassword: change-me
+  storage:
+    type: emptyDir

@@ -1,0 +1,18 @@
+{{- if .Values.blackbox.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mysite.fullname" . }}-blackbox
+  labels:
+    {{- include "mysite.labels" . | nindent 4 }}
+    app.kubernetes.io/component: blackbox
+spec:
+  selector:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: blackbox
+  ports:
+    - port: {{ .Values.blackbox.service.port }}
+      targetPort: {{ .Values.blackbox.service.port }}
+      protocol: TCP
+  type: ClusterIP
+{{- end }}
